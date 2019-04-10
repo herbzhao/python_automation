@@ -1,0 +1,24 @@
+delay(0.5)
+move_mouse(800, 300)
+delay(0.1)
+click('right')
+delay(3)
+click('left')
+delay(1)
+key_combination('ctrl', 'p')
+
+loop_start(3)
+# for normal text input
+#keyboard_input('abcdef')
+# for an incremental number
+keyboard_input('CNC_10x_', '1')
+delay(2)
+key_combination('ctrl', 'a')
+key_combination('delete')
+delay(2)
+loop_end()
+
+delay(0.1)
+move_mouse(300, 800)
+delay(0.5)
+click('left')
