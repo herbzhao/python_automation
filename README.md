@@ -9,17 +9,21 @@ You can also track location of a screen shot.
 
 ## remember to change current working folder to this module!
 
-Run the automation by execute run_me.py
+Run the automation:
+
 `python run_me.py`
 
+#### change the active script file name accordingly
+
 Find the coordinates of mouse by 
+
 `python coordinate_recorder.py`
 
 and the coordinates will be available in `coordinates.txt`
 
 Usage:
 
-edit the script file in 
+edit/create the script file in scripts folder
 
 ```python
 # hot_key combination
