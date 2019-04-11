@@ -21,7 +21,8 @@ Find the coordinates of mouse by
 
 and the coordinates will be available in `coordinates.txt`
 
-Usage:
+
+# Script file:
 
 edit/create the script file in scripts folder
 
