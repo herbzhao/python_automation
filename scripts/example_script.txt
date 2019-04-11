@@ -5,18 +5,22 @@ click('right')
 delay(3)
 click('left')
 delay(1)
-key_combination('ctrl', 'p')
+hot_key('ctrl', 'f')
 
+find_image('screenshots\happy.png')
+
+# start to repeat for x amount of times
 loop_start(3)
 # for normal text input
-#keyboard_input('abcdef')
+# keyboard_input('abcdef')
 # for an incremental number
 keyboard_input('CNC_10x_', '1')
 delay(2)
-key_combination('ctrl', 'a')
-key_combination('delete')
+hot_key('ctrl', 'a')
+hot_key('delete')
 delay(2)
 loop_end()
+
 
 delay(0.1)
 move_mouse(300, 800)

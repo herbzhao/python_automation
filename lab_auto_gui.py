@@ -1,6 +1,6 @@
 import pyautogui
 import time
-
+import datetime
 
 class lab_auto_class_builder():
     def __init__(self):
@@ -22,19 +22,13 @@ class lab_auto_class_builder():
         lines = [line for line in lines  if line[0] != '#' and line !='\n']
 
         for line in lines:
-            # print(line)
             if 'loop_start' in line:
-                print('loop started!')
                 loop_start_line = line_count
                 loop_number = int(line.replace('loop_start(', '').replace(')',''))
             if 'loop_end' in line:
-                print('loop ended')
                 loop_end_line = line_count
             line_count += 1
 
-        print('loop number {}'.format(loop_number))
-        print('loop start {}'.format(loop_start_line))
-        print('loop end {}'.format(loop_end_line))
 
         looped_lines = lines[loop_start_line:loop_end_line]
         # beginning of the command
@@ -52,16 +46,8 @@ class lab_auto_class_builder():
         for line in lines[loop_end_line:]:
             self.line_parser(line)
 
-        print('head')
-        print(lines[:loop_start_line])
-        print('loop')
-        print(lines[loop_start_line:loop_end_line])
-        print('end')
-        print(lines[loop_end_line:])
-
 
     def line_parser(self, line):
-        print(line)
         #  for comment
         if line[0] == '#' or line == '\n':
             return None
@@ -76,12 +62,14 @@ class lab_auto_class_builder():
 
             if action == 'move_mouse':
                 self.move_mouse(argument)
+            elif action == 'find_image':
+                self.find_image(argument)
             elif action == 'click':
                 self.click(argument)
             elif action == 'delay':
                 self.delay(argument)
-            elif action == 'key_combination':
-                self.key_combination(argument) 
+            elif action == 'hot_key':
+                self.hot_key(argument) 
             elif action == 'keyboard_input':
                 self.keyboard_input(argument)
 
@@ -89,7 +77,20 @@ class lab_auto_class_builder():
         x = int(argument.split(',')[0])
         y = int(argument.split(',')[1])
         pyautogui.moveTo(x, y, duration=0.1)
-        
+
+    def find_image(self, argument="'image.png'"):
+        argument = argument[1:-1]
+        #  keep searching the image in a loop
+        while True:
+            image_box = pyautogui.locateOnScreen(argument, grayscale=False)
+            if image_box is None:
+                print('couldnt find the {}, search again in few seconds'.format(argument))
+                time.sleep(2)
+            else:
+                image_centre = pyautogui.center(image_box)
+                pyautogui.moveTo(image_centre[0], image_centre[1], duration=0.1)
+                break
+
     def delay(self, argument='0.5'):
         time.sleep(float(argument))
 
@@ -98,7 +99,7 @@ class lab_auto_class_builder():
         argument = argument[1:-1]
         pyautogui.click(button=argument)
     
-    def key_combination(self, argument="'ctrl', 's'"):
+    def hot_key(self, argument="'ctrl', 's'"):
         keys = argument.split(',')
         keys = [key.replace('\'','').replace('\"','').replace(' ','') for key in keys]
         pyautogui.hotkey(*keys)
@@ -116,12 +117,14 @@ class lab_auto_class_builder():
                 self.sample_number = int(keys[1])
             text = keys[0] + '{:03d}'.format(self.sample_number)
         
+        # print a time tag as this is useful for users
         pyautogui.typewrite(text, interval=0.01)
-
-            
+        print(datetime.datetime.now().strftime('%D %H:%M:%S'))
+        print(text)
 
 
 
 if __name__ == '__main__':
     lab_auto_class = lab_auto_class_builder()
-    lab_auto_class.script_parser(filename='example_script.txt')
+    # change this file name to your script name
+    lab_auto_class.script_parser(filename='scripts/timelapse_script.txt')

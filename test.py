@@ -1,5 +1,4 @@
-x = '# asdfj'
-lines = ['asdf', '@asjdfkl', '#asdjflk', 'dsf##$', '\n']
-lines = [line for line in lines  if line[0] != '#' and line !='\n']
+import pyautogui
+import datetime
 
-print(lines)
+print( datetime.datetime.now().strftime('%D %H:%M:%S'))
