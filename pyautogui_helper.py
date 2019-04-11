@@ -2,14 +2,16 @@ import pyautogui
 import time
 import datetime
 
-class lab_auto_class_builder():
+class pyautogui_helper_class_builder():
     def __init__(self):
         self.screen_size = pyautogui.size()
         # moving the mouse to the upper-left to stop programme
         pyautogui.FAILSAFE = True
         # a delay after each call
         # pyautogui.PAUSE = 0.1
-        self.list_of_actions = ['move_mouse', 'click', 'user_input', '']
+
+        # a counter to store sample number
+        self.counter = {}
         
     def script_parser(self, filename='example_script.txt'):
         file = open(filename, 'r')
@@ -62,6 +64,8 @@ class lab_auto_class_builder():
 
             if action == 'move_mouse':
                 self.move_mouse(argument)
+            elif action == 'move_mouse_relative':
+                self.move_mouse_relative(argument)
             elif action == 'find_image':
                 self.find_image(argument)
             elif action == 'click':
@@ -77,6 +81,11 @@ class lab_auto_class_builder():
         x = int(argument.split(',')[0])
         y = int(argument.split(',')[1])
         pyautogui.moveTo(x, y, duration=0.1)
+
+    def move_mouse_relative(self, argument='100, 200'):
+        x = int(argument.split(',')[0])
+        y = int(argument.split(',')[1])
+        pyautogui.move(x, y, duration=0.1)
 
     def find_image(self, argument="'image.png'"):
         argument = argument[1:-1]
@@ -111,12 +120,22 @@ class lab_auto_class_builder():
         text = keys[0]
         #  the second argument is the incremental value
         if len(keys) > 1:
-            try:
-                self.sample_number += 1
-            except AttributeError:
-                self.sample_number = int(keys[1])
-            text = keys[0] + '{:03d}'.format(self.sample_number)
-        
+            if len(keys)>2:
+                # if the counter name is specified
+                try:
+                    self.counter[keys[2]] += 1
+                except KeyError:
+                    self.counter[keys[2]] = int(keys[1])
+                text = keys[0] + '{:03d}'.format(self.counter[keys[2]])
+                
+            else:
+                # if the counter name is not specified, share the same counter
+                try:
+                    self.counter['default'] += 1
+                except KeyError:
+                    self.counter['default'] = int(keys[1])
+                text = keys[0] + '{:03d}'.format(self.counter['default'])
+
         # print a time tag as this is useful for users
         pyautogui.typewrite(text, interval=0.01)
         print(datetime.datetime.now().strftime('%D %H:%M:%S'))
@@ -125,6 +144,6 @@ class lab_auto_class_builder():
 
 
 if __name__ == '__main__':
-    lab_auto_class = lab_auto_class_builder()
+    pyautogui_helper_class = pyautogui_helper_class_builder()
     # change this file name to your script name
-    lab_auto_class.script_parser(filename='scripts/timelapse_script.txt')
+    pyautogui_helper_class.script_parser(filename='scripts/example_script.txt')

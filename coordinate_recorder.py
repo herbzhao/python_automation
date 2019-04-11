@@ -1,6 +1,4 @@
 import pyautogui  # http://pyautogui.readthedocs.io/en/latest/cheatsheet.html
-import time
-import os
 
 class  coordinate_recorder_class_builder():
     def __init__(self):

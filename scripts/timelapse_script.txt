@@ -1,6 +1,7 @@
-hot_key('esc')
-hot_key('ctrl', 'f')
-delay(0.5)
+find_image('screenshots/chrome.png')
+move_mouse(2660, 876)
+delay(0.1)
+click('left')
 
 loop_start(5)
 
